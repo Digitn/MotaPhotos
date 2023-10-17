@@ -1,0 +1,86 @@
+/*
+Theme Name: MotaphotoChild
+Description: Child Theme Twentytwentyone pour Motaphoto
+Author: abtnMota
+Author URI: http://localhost/
+Template: twentytwentyone
+Version: 1.8
+*/
+
+@import "scss/fonts";
+@import "scss/variables";
+@import "scss/mixins";
+
+//Général
+body{
+    font-family: "Space Mono";
+}
+
+a{
+    text-decoration: none;
+    &:hover{
+        color: $primary-color-light;
+    }
+}
+
+.topmenu {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    align-items: center;
+    max-width: 1440px;
+    margin: auto;
+    height:80px;
+    #logo{
+        max-width: 216px;
+        padding: 10px;
+    }
+    #primary-menu {
+        @include menu;
+        li{
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .active a{
+            color: $secondary-color;
+        }
+    }
+}
+
+.banner{
+    background-image: url(./assets/img/banner.jpeg);
+    background-size: cover;
+    height:962px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    h1{
+        font-family: "Space Mono";
+        font-size: 96px;
+        text-transform: uppercase;
+        font-style: italic;
+        font-weight: bold;
+        color: transparent;
+        -webkit-text-stroke: 3px $body-color; 
+    }
+}
+
+#footer {
+    display: flex;
+    justify-content: center;
+    max-width: 1440px;
+    margin: auto;
+    height:40px;
+    #footer-menu {
+        @include menu;
+        li{
+            padding: 10px 45px;
+            font-size: 16px;
+        }
+        .active a{
+            color: $secondary-color;
+        }
+    }
+}
+

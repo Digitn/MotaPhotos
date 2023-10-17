@@ -6,3 +6,124 @@ Author URI: http://localhost/
 Template: twentytwentyone
 Version: 1.8
 */
+@font-face {
+  font-family: "Space Mono";
+  src: url("assets/fonts/SpaceMono-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Mono Bold";
+  src: url("assets/fonts/SpaceMono-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Mono";
+  src: url("assets/fonts/SpaceMono-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Mono";
+  src: url("assets/fonts/SpaceMono-BoldItalic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("assets/fonts/Poppins-Medium.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("assets/fonts/Poppins-Light.ttf") format("truetype");
+  font-weight: lighter;
+  font-style: normal;
+  font-display: swap;
+}
+body {
+  font-family: "Space Mono";
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  color: #C4C4C4;
+}
+
+.topmenu {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: center;
+  max-width: 1440px;
+  margin: auto;
+  height: 80px;
+}
+.topmenu #logo {
+  max-width: 216px;
+  padding: 10px;
+}
+.topmenu #primary-menu {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  font-family: "Space Mono";
+  text-transform: uppercase;
+}
+.topmenu #primary-menu li {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+.topmenu #primary-menu .active a {
+  color: #E00000;
+}
+
+.banner {
+  background-image: url(./assets/img/banner.jpeg);
+  background-size: cover;
+  height: 962px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+.banner h1 {
+  font-family: "Space Mono";
+  font-size: 96px;
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: bold;
+  color: transparent;
+  -webkit-text-stroke: 3px #ffffff;
+}
+
+#footer {
+  display: flex;
+  justify-content: center;
+  max-width: 1440px;
+  margin: auto;
+  height: 40px;
+}
+#footer #footer-menu {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  font-family: "Space Mono";
+  text-transform: uppercase;
+}
+#footer #footer-menu li {
+  padding: 10px 45px;
+  font-size: 16px;
+}
+#footer #footer-menu .active a {
+  color: #E00000;
+}/*# sourceMappingURL=style.css.map */

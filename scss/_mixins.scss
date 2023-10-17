@@ -1,0 +1,7 @@
+@mixin menu{
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    font-family: "Space Mono";
+    text-transform: uppercase;
+}
