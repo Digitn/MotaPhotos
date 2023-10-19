@@ -8,21 +8,23 @@
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-    <header id="header">
-        <div class="topmenu">
-            <!-- Logo -->
-            <a href="<?php echo home_url(); ?>"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/Logo.png" alt="Logo Motaphoto" id="logo"></a>
-            <!-- Navigation -->
-            <nav>
-                <?php
-                    wp_nav_menu( array(
-                        'theme_location' => 'primary',
-                        'menu_id' => 'primary-menu',
-                    ) );
-                ?>
-            </nav>
+    <header>
+        <div class="barmenu">
+            <div class="topmenu">
+                <!-- Logo -->
+                <a href="<?php echo home_url(); ?>"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/Logo.png" alt="Logo Motaphoto" id="logo"></a>
+                <!-- Navigation -->
+                <nav>
+                    <?php
+                        wp_nav_menu( array(
+                            'theme_location' => 'primary',
+                            'menu_id' => 'primary-menu',
+                        ) );
+                    ?>
+                </nav>
+            </div>
         </div>
-        <div class="banner">
+        <div class="hero">
             <h1>Photographe Event</h1>
         </div>
     </header>

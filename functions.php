@@ -15,3 +15,8 @@ function add_active_class($classes, $item) {
     return $classes;
 }
 add_filter('nav_menu_css_class' , 'add_active_class' , 10 , 2);
+
+function motaphoto_scripts() {
+    wp_enqueue_script( 'popupmota', get_stylesheet_directory_uri() . '/js/popupmota.js', array(), null, false );
+}
+add_action( 'wp_enqueue_scripts', 'motaphoto_scripts' );
