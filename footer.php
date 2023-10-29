@@ -1,4 +1,4 @@
-	</div><!-- #content -->
+</main><!-- #content -->
 <footer id="footer">
 <?php
 	//Modale formulaire de contact

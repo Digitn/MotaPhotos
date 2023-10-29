@@ -17,7 +17,7 @@
                 <nav>
                     <?php
                         wp_nav_menu( array(
-                            'theme_location' => 'primary',
+                            'theme_location' => 'main',
                             'menu_id' => 'primary-menu',
                         ) );
                     ?>
@@ -30,4 +30,4 @@
     </header>
 
     <!-- Contenu de la page -->
-    <div id="content">
+    <main id="content">
