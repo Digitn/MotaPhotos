@@ -1,0 +1,176 @@
+//Page infos photo
+.bloc-50{
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    width: 50%;
+    max-width: 564px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+
+.picsinfo{
+    .bloc-info{
+        display: flex;
+        justify-content: space-between;
+        max-width: 1148px;
+        text-transform: uppercase;
+        margin: 25px auto 10px;
+        .infos-photo {
+            flex-direction: column;
+            align-self: flex-end;
+            gap: 20px;
+            border-bottom: solid 1px;
+            padding-bottom: 30px;
+            h1{
+                font-family: "Space Mono";
+                font-size: 66px;
+                line-height: 58px;
+                font-style: italic;
+                font-weight: bold;
+            }
+            p{
+                font-size: 14px;
+                line-height: 21px;
+            }           
+        }       
+        .photo-post {
+            position: relative;
+            .photo-post-single {
+                width: 100%;
+                height: auto;
+                background: $primary-color;
+                position: relative;
+                object-fit: contain;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+            .photo-post-single-overlay{
+                position: relative;
+                &:hover{
+                    filter: brightness(50%); 
+                    z-index: 1;
+                }
+            }
+            .icon-zoom, .icon-circle-container {
+                position: absolute;
+                opacity: 0;
+                height: auto; 
+                pointer-events: none;
+            }    
+            #icon-zoom1{
+                width: 45px;
+            }  
+            .icon-circle-container{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: $primary-color;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                top: 15px;
+                right:15px;
+                padding: 5px;
+                box-sizing: content-box;
+                #icon-zoom2{
+                    width: 50%;
+                    height: auto;
+                }
+            }  
+            &:hover{        
+                justify-content: center;
+                flex-wrap: nowrap; 
+                .icon-zoom, .icon-circle-container{
+                    opacity: 1;
+                    z-index: 2;
+                }              
+            }
+        }
+    }
+    .bloc-link{
+        display: flex;
+        justify-content: space-between;
+        max-width: 1148px;
+        text-transform: uppercase;
+        margin: 10px auto;
+        border-bottom: solid 1px;
+        padding-bottom: 10px;
+        .contact-link{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 20px;
+            p{
+                text-transform: none;
+                font-family: 'Poppins';
+                font-size: 14px;
+                display: grid;
+                display: flex;
+                align-self: center;
+            }
+            .contact-btn-preselect{
+                @include button;
+                margin: unset;
+                &:hover{
+                    @include button-hover
+                }
+                &:focus{
+                    transform: scale(0.95);
+                }
+            }
+        }
+        .nav-link-photo{
+            margin-right: 5px;
+            .navigation{
+                margin: 0;
+                .nav-links{
+                    gap: 10px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    .nav-previous, .nav-next{
+                        max-width: unset;
+                    }
+                }
+                .meta-nav{
+                    width: 81px;
+                    text-transform: none;
+                    font-size: 12px;
+
+                    a {
+                        display: grid;
+                        width: 81px;
+                        height: auto;
+                        img{
+                            width: 81px;
+                            height: 71px;
+                            object-fit: cover;
+                            &:first-child:hover{
+                                outline: solid 2px $primary-color;
+                            }
+                        }
+                        .arrow{
+                            width: 81px;
+                            height: auto;
+                            padding: 15px 28px 5px;
+                            &:hover{
+                                transform: scale(1.2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .picssame{
+            max-width: 1148px;
+            text-transform: uppercase;
+            margin: 25px auto 10px;
+            h3{
+                margin-bottom: 25px;
+            }
+    }
+}

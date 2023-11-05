@@ -1,0 +1,57 @@
+//Menu
+header{
+    .barmenu{
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        height:80px;
+        background-color: $body-color; 
+        box-shadow: 0 1px 20px rgba(0,0,0,0.1); 
+
+        .topmenu {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            align-items: center;
+            height: 100%;
+            max-width: 1440px;
+            margin: auto;
+            #logo{
+                max-width: 216px;
+                padding: 10px;
+            }
+            #primary-menu {
+                @include menu;
+                li{
+                    padding: 10px 20px;
+                    font-size: 16px;
+                }
+                .active a{
+                    color: $primary-color-light;
+                }
+            }
+        }
+    }    
+}
+
+//Hero header
+.hero{
+    background-image: url(./assets/img/banner.webp);
+    background-size: cover;
+    height:900px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    h1{
+        font-family: "Space Mono";
+        font-size: 96px;
+        text-transform: uppercase;
+        font-style: italic;
+        font-weight: bold;
+        color: transparent;
+        -webkit-text-stroke: 3px $body-color; 
+    }
+}

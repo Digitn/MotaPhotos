@@ -41,7 +41,7 @@ while ( have_posts() ) :
 		<div class="bloc-link">
 			<div class="contact-link bloc-50">
 				<p>Cette photo vous intéresse ?</p>
-				<button class="contact-btn preselect-ref">Contact</button>
+				<button class="contact-btn contact-btn-preselect">Contact</button>
 			</div>
 			<div class="nav-link-photo">
 				<?php
@@ -62,7 +62,62 @@ while ( have_posts() ) :
 		</div>
 	</article>
 
+	<div class="picssame">
+        <div class="catalogue-photos">
+			<h3>Vous aimerez aussi</h3>
+			<div class="photos-container">
+				<?php
+				$category = get_the_category()[0]->slug;
+				$args = array(
+					'post_type' => 'photos',
+					'posts_per_page' => 2,
+					'category_name' => $category,
+					'post__not_in' => array(get_the_ID()),
+				);
+
+				$query = new WP_Query($args);
+
+				if ($query->have_posts()) {
+					while ($query->have_posts()) {
+						$query->the_post();
+						?>
+						<div class="photos-catalogue">
+							<img src="<?= get_field('affichage_photo') ?>" class="photo-catalogue" alt="<?= get_the_title() ?>" 
+								data-reference="Réf. photo : <?= get_field('reference_photo') ?>" 
+								data-category="Catégorie : <?= get_the_category()[0]->name ?>">
+						</div>
+						<?php
+					}
+				} else {
+					echo 'Aucune autre photo trouvée dans cette catégorie.';
+				}
+				
+				
+				// Remettre les données du post principal
+				wp_reset_postdata();
+				
+				// Compter le nombre total de photos dans la catégorie
+				$total_photos_args = array(
+					'post_type' => 'photos',
+					'category_name' => $category,
+					'post__not_in' => array(get_the_ID()),
+					'fields' => 'ids',
+				);
+				
+				$total_photos_query = new WP_Query($total_photos_args);
+				$total_photos = $total_photos_query->found_posts;
+			echo '</div>';
+			if ($total_photos > 2) {
+				echo '<button class="load-more-btn photos-container-btn" data-post-id="' . get_the_ID() . '">Toutes les photos</button>';  
+			}
+			?>
+		</div>
+    </div>
 <?php
 endwhile; // End of the loop.
 
+//Lightbox pour les photos
+get_template_part ('template_parts/lightbox-gallery'); 
+
 get_footer();
+?>

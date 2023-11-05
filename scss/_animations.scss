@@ -1,3 +1,4 @@
+//Apparition popup
 @keyframes popupmove {
     from {
         transform: translateX(-50%) translateY(100%);
@@ -6,8 +7,31 @@
         transform: translateX(-50%) translateY(-50%);
     }
 }
+//Animation titre popup
 @keyframes textmove {
     to {
         transform: translateX(0);
     }
 }
+
+//Ouverture menu déroulant filtre
+@keyframes filter-textmove-open{
+    from{
+        transform: translateY(50px);
+    }
+    to{
+        transform: translateY(0);
+    }
+}
+
+//Fermeture menu déroulant filtre
+@keyframes filter-textmove-close{
+    from{
+        transform: translateY(0)
+    }
+    to{
+        transform: translateY(50px);
+    }
+}
+
+

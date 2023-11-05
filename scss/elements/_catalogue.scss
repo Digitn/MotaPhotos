@@ -1,0 +1,160 @@
+.catalogue-photos {
+    max-width: 1148px;
+    margin: 60px auto;
+    h3{
+        text-transform: uppercase;
+        font-size: 18px;
+        margin-bottom: 50px;
+    }
+    .catalogue-photos-filter {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        margin-bottom: 30px;
+        flex-wrap: wrap; 
+        justify-content: space-between; 
+        .bloc-50{
+            gap:30px;
+            padding: 0;
+            &:last-child{
+                .catalogue-photos-select{
+                    margin-left:auto;
+                } 
+            } 
+            .catalogue-photos-select{
+                .select {
+                    position: relative;
+                    display: inline-block;
+                    width: 260px;
+                    height: 42px;
+                    cursor: pointer;   
+                    .s-hidden {
+                    visibility: hidden;
+                    padding-right: 10px;
+                    }   
+                    .styledSelect {
+                        display: flex;
+                        align-items: center;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+                        background-color: $body-color;
+                        padding: 0 10px;
+                        font-family: 'Poppins';
+                        font-size: 12px;
+                        text-transform: uppercase;
+                        line-height: 18px;
+                        border: 1.3px solid $accent-color2;
+                        border-radius: 8px;
+                        color: black;      
+                        &:after {
+                            content: url("./assets/img/Icon.png");
+                            position: absolute;
+                            right: 15px;
+                        }
+                        &:hover{
+                            border: solid $accent-color3 1.3px;
+                        }      
+                    } 
+                    .active{
+                        outline: none;
+                        border: solid $accent-color3 1.3px;
+                        background-color: $body-color;
+                        border-radius: 8px 8px 0 0;
+                        &:after {
+                            content: url("./assets/img/Iconup.png");
+                            position: absolute;
+                            right: 15px;
+                        }
+                    }  
+                    .options {
+                        opacity: 0;
+                        max-height: 0;
+                        overflow: hidden;
+                        transition: max-height 0.5s ease-in-out, opacity 0.25s ease-in-out;
+                        position: absolute;
+                        top: 100%;
+                        right: 0;
+                        left: 0;
+                        z-index: 999;
+                        margin: 0;
+                        padding: 0;
+                        list-style: none;
+                        font-family: 'Poppins';
+                        font-size: 12px;
+                        border: 1px solid $accent-color2;
+                        border-top: none;
+                        border-radius: 0 0 8px 8px;
+                        background-color: $body-color;
+                        box-shadow: 0 20px 20px rgba(0, 0, 0, 0.15);    
+                        li {
+                            display: flex;
+                            align-items: center;
+                            padding: 10px;
+                            margin: 0;
+                            height: 42px;
+                            
+                            &:hover {
+                                background-color: $secondary-color-extralight;
+                                color: $primary-color;
+                            }
+                            &:active {
+                                background-color: $secondary-color-light;
+                            }
+                        }
+                        .option-filter-selected{
+                            background-color: $secondary-color;
+                            color: $body-color;
+                        }
+                    }
+                    .options-open{                     
+                        opacity: 1;
+                        max-height: 500px; // ajustez selon le besoin  
+                        .options-filter-open{
+                            animation: filter-textmove-close 500ms;
+                        }
+                    }
+                    .options-close{   
+                        opacity: 0;
+                        max-height: 0;
+                        .options-filter-open{
+                            animation: filter-textmove-close 500ms;
+                        }
+                    }
+                } 
+            }
+        }            
+    }
+    .photos-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 20px;
+        .photos-catalogue {
+            flex:1;
+            flex-basis: calc(50% - 10px);
+            max-height: 564px;
+            .photo-catalogue {
+                aspect-ratio: 1 / 1;
+                width: 100%;
+                height: 100%;
+                max-width: 564px;
+                object-fit: cover;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+            .photo-catalogue-overlay{
+                position: relative;
+                &:hover{
+                    filter: brightness(50%); 
+                    z-index: 1;
+                }
+            }
+
+        }
+    }
+}
+  
