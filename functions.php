@@ -9,10 +9,14 @@ add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles' );
 
 function motaphoto_scripts() {
     wp_enqueue_script( 'popupmota', get_stylesheet_directory_uri() . '/js/popupmota.js', array(), null, false );
-    wp_enqueue_script( 'lightboxmota', get_stylesheet_directory_uri() . '/js/lightboxmota.js', array(), null, false );
-    wp_enqueue_script( 'lightboxgallerymota', get_stylesheet_directory_uri() . '/js/lightboxgallerymota.js', array(), null, false );
-    wp_enqueue_script( 'cataloguemota-page', get_stylesheet_directory_uri() . '/js/cataloguemota-page.js', array(), null, false );
-    wp_enqueue_script( 'cataloguemota-single', get_stylesheet_directory_uri() . '/js/cataloguemota-single.js', array(), null, false );
+    if ( is_front_page() ) {
+        wp_enqueue_script( 'cataloguemota-page', get_stylesheet_directory_uri() . '/js/cataloguemota-page.js', array(), null, false );
+        wp_enqueue_script( 'lightboxmota-page', get_stylesheet_directory_uri() . '/js/lightboxmota-page.js', array(), null, false );
+    }
+    if ( is_single() || is_category() ) {
+        wp_enqueue_script( 'cataloguemota-single', get_stylesheet_directory_uri() . '/js/cataloguemota-single.js', array(), null, false );
+        wp_enqueue_script( 'lightboxmota-single', get_stylesheet_directory_uri() . '/js/lightboxmota-single.js', array(), null, false );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'motaphoto_scripts' );
 
@@ -226,77 +230,72 @@ add_filter('nav_menu_css_class' , 'add_active_class' , 10 , 2);
 //**Gestion filtres photos Ajax
 // Page d'accueil : Gestion affichage
 function get_and_display_photos() {
-
     $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
     $category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
     $format = isset($_POST['format_photo']) ? sanitize_text_field($_POST['format_photo']) : '';
-    $sort = isset($_POST['date_photo']) && in_array($_POST['date_photo'], ['ASC', 'DESC']) ? $_POST['date_photo'] : 'RAND'; // Default to 'RAND' if not set
+    $sort = isset($_POST['date_photo']) && in_array($_POST['date_photo'], ['ASC', 'DESC']) ? $_POST['date_photo'] : 'DESC'; 
 
     $args = array(
         'post_type' => 'photos',
         'post_status' => 'publish',
         'posts_per_page' => -1,
-        'orderby' => $sort === 'RAND' ? 'rand' : 'meta_value',
-        'meta_key' => $sort === 'RAND' ? '' : 'date_photo',
-        'order' => $sort !== 'RAND' ? $sort : '',
+        'orderby' => 'meta_value_num', 
+        'meta_key' => 'date_photo', 
+        'order' => $sort,
         'offset' => $offset,
     );
 
-    if ($category || $format) {
-        $args['tax_query'] = array('relation' => 'AND');
-    }
-
+    $tax_query = array();
     if ($category) {
-        $args['tax_query'][] = array(
+        $tax_query[] = array(
             'taxonomy' => 'category',
             'field'    => 'slug',
             'terms'    => $category,
         );
     }
-
     if ($format) {
-        $args['tax_query'][] = array(
+        $tax_query[] = array(
             'taxonomy' => 'format_photo',
             'field'    => 'slug',
             'terms'    => $format,
         );
     }
+    if (!empty($tax_query)) {
+        $tax_query['relation'] = 'AND';
+        $args['tax_query'] = $tax_query;
+    }
 
     $query = new WP_Query($args);
-    $photos_data = [];
+    $photos_data = array();
 
     if ($query->have_posts()) {
         while ($query->have_posts()) {
             $query->the_post();
             $photo_url = get_field('affichage_photo');
-            $category_names = array();
-            $categories = get_the_category();
-
-            foreach($categories as $cat) {
-                $category_names[] = $cat->name;
-            }
-            $category_names_list = implode(', ', $category_names);
-
             if ($photo_url) {
-                $photos_data[] = [
+                $categories = get_the_terms(get_the_ID(), 'category'); 
+                $category_names = wp_list_pluck($categories, 'name');
+
+                $photos_data[] = array(
                     'photo_url'    => esc_url($photo_url),
                     'title'        => get_the_title(),
-                    'category'     => $category_names_list, // Here we get slugs
+                    'category'     => implode(', ', $category_names),
                     'reference'    => get_field('reference_photo'),
-                ];
+                    'detail_url'   => get_permalink(''),
+                );
             }
         }
     } else {
         $photos_data['error'] = 'Aucune photo trouvée.';
     }
-
     wp_reset_postdata();
     echo json_encode($photos_data);
     wp_die();
-}
 
+}
 add_action('wp_ajax_get_and_display_photos', 'get_and_display_photos');
 add_action('wp_ajax_nopriv_get_and_display_photos', 'get_and_display_photos');
+
 
 
 
@@ -351,6 +350,8 @@ function load_more_cat_photos() {
                 'alt' => get_the_title(),
                 'reference' => get_field('reference_photo'),
                 'category' => get_the_category()[0]->name,
+                'post_id' => get_the_ID(),
+                'detail_url'   => get_permalink(''),
             );
         }
     }
@@ -364,11 +365,48 @@ add_action('wp_ajax_load_more_cat_photos', 'load_more_cat_photos');
 add_action('wp_ajax_nopriv_load_more_cat_photos', 'load_more_cat_photos');
 
 
-
-// Cacher la section hero sur les pages de type 'photos'
-function hide_hero_on_posts() {
-    if (is_single() && get_post_type() === 'photos') {
-        echo '<style>.hero { display: none; }</style>';
+function load_cat_photos() {
+    // Assurez-vous que l'ID du post est envoyé
+    $post_id = isset($_GET['post_id']) ? (int) $_GET['post_id'] : 0;
+    if (!$post_id) {
+        wp_send_json_error('Aucun ID de publication fourni');
+        return;
     }
+
+    $category = get_the_category($post_id);
+    if (empty($category)) {
+        wp_send_json_error('Aucune catégorie trouvée pour cet ID de publication');
+        return;
+    }
+    $category_slug = $category[0]->slug;
+
+    $args = array(
+        'post_type' => 'photos',
+        'posts_per_page' => -1, 
+        'category_name' => $category_slug,
+    );
+
+    $query = new WP_Query($args);
+
+    $photos = array();
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $photos[] = array(
+                'src' => get_field('affichage_photo'),
+                'alt' => get_the_title(),
+                'reference' => get_field('reference_photo'),
+                'category' => $category[0]->name,
+                'detail_url'   => get_permalink(''),
+
+            );
+        }
+    }
+
+    wp_reset_postdata(); 
+
+    wp_send_json_success($photos); 
 }
-add_action('wp_head', 'hide_hero_on_posts');
+
+add_action('wp_ajax_load_cat_photos', 'load_cat_photos');
+add_action('wp_ajax_nopriv_load_cat_photos', 'load_cat_photos');

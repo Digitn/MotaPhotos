@@ -23,19 +23,26 @@ while ( have_posts() ) :
 				<h1><?= get_the_title() ?></h1>
 				<p>Référence : <?= get_field('reference_photo') ?></p>
 				<p>Catégorie : <?= the_category (',') ?></p>
-				<p>Format : <?= get_the_term_list (get_the_ID(), 'format_photo' ) ?></p>
-				<p>Type : <?= get_the_term_list (get_the_ID(), 'type_photo') ?></p>
+				<p>Format : 
+					<?php 
+					$formats = wp_get_post_terms(get_the_ID(), 'format_photo', array("fields" => "names"));
+					echo esc_html(implode(', ', $formats));
+					?>
+				</p>
+				<p>Type : 
+					<?php 
+					$types = wp_get_post_terms(get_the_ID(), 'type_photo', array("fields" => "names"));
+					echo esc_html(implode(', ', $types));
+					?>
+				</p>
 				<p>Année : <?= get_field('date_photo') ?></p>				
 			</section>
 			<section class="photo-post bloc-50">
 				<img src= "<?= get_field('affichage_photo') ?>" class= "photo-post-single photo-post-single-overlay" alt ="<?= get_the_title() ?>" 
-				data-reference=" Réf. photo : <?= get_field('reference_photo') ?>" data-category= "Catégorie : <?= get_the_category()[0]->name ?>">
-				<div class="icon-circle-container">
-					<img src= "<?php echo get_stylesheet_directory_uri(); ?>/assets/img/expand.png" alt="icon-zoom" id="icon-zoom2" class="icon-zoom">
-				</div>
-				<?php //Lightbox pour les photos
-					get_template_part ('template_parts/lightbox'); 
-				?>
+					data-reference=" Réf. photo : <?= get_field('reference_photo') ?>" 
+					data-category= "Catégorie : <?= get_the_category()[0]->name ?>"
+					data-post-id="<?= get_the_ID() ?>">
+				<img src= "<?php echo get_stylesheet_directory_uri(); ?>/assets/img/expand.png" class="photo-expand" alt="icon photo-expand">
 			</section>
 		</div>
 		<div class="bloc-link">
@@ -82,9 +89,15 @@ while ( have_posts() ) :
 						$query->the_post();
 						?>
 						<div class="photos-catalogue">
-							<img src="<?= get_field('affichage_photo') ?>" class="photo-catalogue" alt="<?= get_the_title() ?>" 
+							<img src="<?= get_field('affichage_photo') ?>" class="photo-catalogue photo-catalogue-overlay" alt="<?= get_the_title() ?>" 
+								data-url="<?= get_field('affichage_photo') ?>"
 								data-reference="Réf. photo : <?= get_field('reference_photo') ?>" 
-								data-category="Catégorie : <?= get_the_category()[0]->name ?>">
+								data-category="Catégorie : <?= get_the_category()[0]->name ?>"
+								data-post-id="<?= get_the_ID() ?>">
+							<img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/expand.png" class="photo-expand" alt="icon photo-expand">
+							<a href="<?= get_permalink() ?>" target="_blank" class="photo-detail-link">
+								<img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/eye-regular.png" class="photo-infolink" alt="icon photo-infolink">
+							</a>
 						</div>
 						<?php
 					}

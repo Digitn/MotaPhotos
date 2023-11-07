@@ -29,8 +29,8 @@
         text-align: center;
         top: 5%;
         .lightbox-image {
-            max-width: 80vw;
-            max-height: 80vh;
+            max-width: 70vw;
+            max-height: 70vh;
         }
         .image-details {
             display: flex;
@@ -43,32 +43,27 @@
             }
         }
     }
-    .lightbox-previous-photo{
+    .lightbox-previous-photo, .lightbox-next-photo{
         display: flex;
+        align-items: center;
         flex-direction: row;
         gap: 10px;
         position: relative;
-        right: 30px;
+        &:hover{
+            cursor: pointer;
+        }
         p{
             color: $body-color;
             text-transform: none;
         }
-        #lightbox-white-arrow-left{
+        .lightbox-white-arrow-left, .lightbox-white-arrow-right{
             width: 36px;
         }
     }
+    .lightbox-previous-photo{
+        right: 30px;
+    }
     .lightbox-next-photo{
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        position: relative;
         left: 30px;
-        p{
-            color: $body-color;
-            text-transform: none;
-        }
-        .lightbox-white-arrow-right{
-            width: 36px;
-        }
     }
 }

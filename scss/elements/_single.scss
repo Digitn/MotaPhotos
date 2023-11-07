@@ -37,55 +37,43 @@
         }       
         .photo-post {
             position: relative;
+
             .photo-post-single {
                 width: 100%;
                 height: auto;
-                background: $primary-color;
                 position: relative;
-                object-fit: contain;
-                &:hover{
-                    cursor: pointer;
-                }
+                object-fit: cover;
             }
-            .photo-post-single-overlay{
-                position: relative;
-                &:hover{
-                    filter: brightness(50%); 
-                    z-index: 1;
-                }
-            }
-            .icon-zoom, .icon-circle-container {
-                position: absolute;
+            .photo-expand{
                 opacity: 0;
-                height: auto; 
-                pointer-events: none;
-            }    
-            #icon-zoom1{
-                width: 45px;
-            }  
-            .icon-circle-container{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: $primary-color;
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
+                padding: 10px 9px;
+                position: absolute;
+                width: 34px;
+                height: 34px;
+                z-index: 900;
+                right: 15px;
+                background-image: url(./assets/img/background-expand.png);
+                background-size: cover;
                 top: 15px;
-                right:15px;
-                padding: 5px;
-                box-sizing: content-box;
-                #icon-zoom2{
-                    width: 50%;
-                    height: auto;
-                }
-            }  
+            } 
             &:hover{        
                 justify-content: center;
                 flex-wrap: nowrap; 
-                .icon-zoom, .icon-circle-container{
+                z-index: 1;
+                .photo-post-single-overlay{
+                    position: relative;
+                    filter: brightness(50%); 
+                    z-index: 1;
+                } 
+                .photo-expand{
                     opacity: 1;
-                    z-index: 2;
+                    transition: opacity ease-in-out 500ms;
+                    z-index: 900;
+                    &:hover{
+                        transform: scale(1.1);
+                        transition: transform 300ms;
+                        cursor: pointer;
+                    }
                 }              
             }
         }

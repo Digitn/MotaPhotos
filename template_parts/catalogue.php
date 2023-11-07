@@ -33,7 +33,7 @@
             <div class="catalogue-photos-select custom-select">
                 <select name="select-filter-sort"  id="select-filter-sort" class="select-filter">
                     <option value="__label__"disabled select>Tri par</option>
-                    <option value="">Sélection aléatoire</option>
+                    <option value="RAND">Tirage aléatoire</option>
                     <option value="DESC">Du plus récent au plus ancien</option>
                     <option value="ASC">Du plus ancien au plus récent</option>
                 </select>

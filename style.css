@@ -118,13 +118,10 @@ header .barmenu .topmenu #primary-menu .active a {
 }
 
 .hero {
+  display: flex;
   background-image: url(./assets/img/banner.webp);
   background-size: cover;
-  height: 900px;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
+  height: calc(100vh - 80px);
 }
 .hero h1 {
   font-family: "Space Mono";
@@ -134,6 +131,7 @@ header .barmenu .topmenu #primary-menu .active a {
   font-weight: bold;
   color: transparent;
   -webkit-text-stroke: 3px #ffffff;
+  margin: auto;
 }
 
 .popup-overlay {
@@ -194,7 +192,7 @@ header .barmenu .topmenu #primary-menu .active a {
   left: 30px;
 }
 .popup-overlay .popup-contact .popup-header .popup-close {
-  display: none;
+  opacity: 0;
   position: absolute;
   top: 5px;
   right: 25px;
@@ -202,6 +200,7 @@ header .barmenu .topmenu #primary-menu .active a {
   background-color: #ffffff;
   border-radius: 4px;
   cursor: pointer;
+  transition: opacity ease-in-out 150ms;
 }
 .popup-overlay .popup-contact .wpcf7 {
   padding-top: 120px;
@@ -331,11 +330,14 @@ header .barmenu .topmenu #primary-menu .active a {
   border: 1.3px solid #B8BBC2;
   border-radius: 8px;
   color: black;
+  transition-duration: 500ms;
 }
 .catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .styledSelect:after {
   content: url("./assets/img/Icon.png");
   position: absolute;
   right: 15px;
+  opacity: 1;
+  transition: opacity ease-in-out 500ms;
 }
 .catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .styledSelect:hover {
   border: solid #215AFF 1.3px;
@@ -345,17 +347,19 @@ header .barmenu .topmenu #primary-menu .active a {
   border: solid #215AFF 1.3px;
   background-color: #ffffff;
   border-radius: 8px 8px 0 0;
+  transition-duration: 500ms;
 }
 .catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .active:after {
   content: url("./assets/img/Iconup.png");
   position: absolute;
   right: 15px;
+  opacity: 1;
+  transition: opacity ease-in-out 500ms;
 }
 .catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .options {
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.5s ease-in-out, opacity 0.25s ease-in-out;
   position: absolute;
   top: 100%;
   right: 0;
@@ -371,6 +375,7 @@ header .barmenu .topmenu #primary-menu .active a {
   border-radius: 0 0 8px 8px;
   background-color: #ffffff;
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.15);
+  transition: max-height 0.5s ease-in-out;
 }
 .catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .options li {
   display: flex;
@@ -378,6 +383,7 @@ header .barmenu .topmenu #primary-menu .active a {
   padding: 10px;
   margin: 0;
   height: 42px;
+  animation: filter-textmove-open 500ms;
 }
 .catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .options li:hover {
   background-color: #FFD6D6;
@@ -394,14 +400,13 @@ header .barmenu .topmenu #primary-menu .active a {
   opacity: 1;
   max-height: 500px;
 }
-.catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .options-open .options-filter-open {
-  animation: filter-textmove-close 500ms;
+.catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .options-open .li {
+  animation: filter-textmove-open 500ms;
 }
 .catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .options-close {
-  opacity: 0;
   max-height: 0;
 }
-.catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .options-close .options-filter-open {
+.catalogue-photos .catalogue-photos-filter .bloc-50 .catalogue-photos-select .select .options-close .li {
   animation: filter-textmove-close 500ms;
 }
 .catalogue-photos .photos-container {
@@ -411,9 +416,12 @@ header .barmenu .topmenu #primary-menu .active a {
   gap: 20px;
 }
 .catalogue-photos .photos-container .photos-catalogue {
+  display: flex;
   flex: 1;
   flex-basis: calc(50% - 10px);
   max-height: 564px;
+  max-width: 564px;
+  position: relative;
 }
 .catalogue-photos .photos-container .photos-catalogue .photo-catalogue {
   aspect-ratio: 1/1;
@@ -423,15 +431,44 @@ header .barmenu .topmenu #primary-menu .active a {
   -o-object-fit: cover;
      object-fit: cover;
 }
-.catalogue-photos .photos-container .photos-catalogue .photo-catalogue:hover {
-  cursor: pointer;
-}
 .catalogue-photos .photos-container .photos-catalogue .photo-catalogue-overlay {
   position: relative;
 }
 .catalogue-photos .photos-container .photos-catalogue .photo-catalogue-overlay:hover {
-  filter: brightness(50%);
   z-index: 1;
+}
+.catalogue-photos .photos-container .photos-catalogue:hover .photo-catalogue-overlay {
+  filter: brightness(50%);
+}
+.catalogue-photos .photos-container .photos-catalogue:hover .photo-expand, .catalogue-photos .photos-container .photos-catalogue:hover .photo-infolink {
+  opacity: 1;
+  transition: opacity ease-in-out 500ms;
+  cursor: pointer;
+}
+.catalogue-photos .photos-container .photos-catalogue:hover .photo-expand:hover, .catalogue-photos .photos-container .photos-catalogue:hover .photo-infolink:hover {
+  transform: scale(1.1);
+  transition: transform 300ms;
+}
+.catalogue-photos .photos-container .photos-catalogue .photo-expand {
+  opacity: 0;
+  padding: 10px 9px;
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  z-index: 900;
+  right: 10px;
+  background-image: url(./assets/img/background-expand.png);
+  background-size: cover;
+  top: 10px;
+}
+.catalogue-photos .photos-container .photos-catalogue .photo-infolink {
+  opacity: 0;
+  position: absolute;
+  width: 46px;
+  top: calc(50% - 20px);
+  left: calc(50% - 23px);
+  height: auto;
+  z-index: 900;
 }
 
 .bloc-50 {
@@ -475,54 +512,41 @@ header .barmenu .topmenu #primary-menu .active a {
 .picsinfo .bloc-info .photo-post .photo-post-single {
   width: 100%;
   height: auto;
-  background: #000000;
   position: relative;
-  -o-object-fit: contain;
-     object-fit: contain;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
-.picsinfo .bloc-info .photo-post .photo-post-single:hover {
-  cursor: pointer;
-}
-.picsinfo .bloc-info .photo-post .photo-post-single-overlay {
-  position: relative;
-}
-.picsinfo .bloc-info .photo-post .photo-post-single-overlay:hover {
-  filter: brightness(50%);
-  z-index: 1;
-}
-.picsinfo .bloc-info .photo-post .icon-zoom, .picsinfo .bloc-info .photo-post .icon-circle-container {
-  position: absolute;
+.picsinfo .bloc-info .photo-post .photo-expand {
   opacity: 0;
-  height: auto;
-  pointer-events: none;
-}
-.picsinfo .bloc-info .photo-post #icon-zoom1 {
-  width: 45px;
-}
-.picsinfo .bloc-info .photo-post .icon-circle-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000000;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  top: 15px;
+  padding: 10px 9px;
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  z-index: 900;
   right: 15px;
-  padding: 5px;
-  box-sizing: content-box;
-}
-.picsinfo .bloc-info .photo-post .icon-circle-container #icon-zoom2 {
-  width: 50%;
-  height: auto;
+  background-image: url(./assets/img/background-expand.png);
+  background-size: cover;
+  top: 15px;
 }
 .picsinfo .bloc-info .photo-post:hover {
   justify-content: center;
   flex-wrap: nowrap;
+  z-index: 1;
 }
-.picsinfo .bloc-info .photo-post:hover .icon-zoom, .picsinfo .bloc-info .photo-post:hover .icon-circle-container {
+.picsinfo .bloc-info .photo-post:hover .photo-post-single-overlay {
+  position: relative;
+  filter: brightness(50%);
+  z-index: 1;
+}
+.picsinfo .bloc-info .photo-post:hover .photo-expand {
   opacity: 1;
-  z-index: 2;
+  transition: opacity ease-in-out 500ms;
+  z-index: 900;
+}
+.picsinfo .bloc-info .photo-post:hover .photo-expand:hover {
+  transform: scale(1.1);
+  transition: transform 300ms;
+  cursor: pointer;
 }
 .picsinfo .bloc-link {
   display: flex;
@@ -660,8 +684,8 @@ header .barmenu .topmenu #primary-menu .active a {
   top: 5%;
 }
 .lightbox-overlay .lightbox-content .lightbox-image {
-  max-width: 80vw;
-  max-height: 80vh;
+  max-width: 70vw;
+  max-height: 70vh;
 }
 .lightbox-overlay .lightbox-content .image-details {
   display: flex;
@@ -673,33 +697,28 @@ header .barmenu .topmenu #primary-menu .active a {
   font-size: 14px;
   color: #ffffff;
 }
-.lightbox-overlay .lightbox-previous-photo {
+.lightbox-overlay .lightbox-previous-photo, .lightbox-overlay .lightbox-next-photo {
   display: flex;
+  align-items: center;
   flex-direction: row;
   gap: 10px;
   position: relative;
+}
+.lightbox-overlay .lightbox-previous-photo:hover, .lightbox-overlay .lightbox-next-photo:hover {
+  cursor: pointer;
+}
+.lightbox-overlay .lightbox-previous-photo p, .lightbox-overlay .lightbox-next-photo p {
+  color: #ffffff;
+  text-transform: none;
+}
+.lightbox-overlay .lightbox-previous-photo .lightbox-white-arrow-left, .lightbox-overlay .lightbox-previous-photo .lightbox-white-arrow-right, .lightbox-overlay .lightbox-next-photo .lightbox-white-arrow-left, .lightbox-overlay .lightbox-next-photo .lightbox-white-arrow-right {
+  width: 36px;
+}
+.lightbox-overlay .lightbox-previous-photo {
   right: 30px;
 }
-.lightbox-overlay .lightbox-previous-photo p {
-  color: #ffffff;
-  text-transform: none;
-}
-.lightbox-overlay .lightbox-previous-photo #lightbox-white-arrow-left {
-  width: 36px;
-}
 .lightbox-overlay .lightbox-next-photo {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  position: relative;
   left: 30px;
-}
-.lightbox-overlay .lightbox-next-photo p {
-  color: #ffffff;
-  text-transform: none;
-}
-.lightbox-overlay .lightbox-next-photo .lightbox-white-arrow-right {
-  width: 36px;
 }
 
 #footer {
@@ -748,6 +767,15 @@ body, h1, h2, h3, p, a, label, .animated-title {
   color: #000000;
 }
 
+h1 {
+  font-family: "Space Mono";
+  font-size: 66px;
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
 h1, h2, h3 {
   pointer-events: none;
 }
@@ -785,4 +813,9 @@ a:hover {
 }
 .photos-container-btn:focus {
   transform: scale(0.95);
+}
+
+.archive-header {
+  max-width: 1140px;
+  margin: 60px auto 30px;
 }/*# sourceMappingURL=style.css.map */

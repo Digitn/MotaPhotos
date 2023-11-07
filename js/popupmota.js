@@ -41,9 +41,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Erreur: la liste des références n\'a pas été chargée', error));
     }
 
-    if (document.body.classList.contains('single')) {
+    if (document.body.classList.contains('page') || document.body.classList.contains('single')) {
         loadPhotoReferences();
     }
+    
 
     function preselectRef() {
         const photoRef = document.querySelector('img[data-reference]');
@@ -55,16 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getAjaxUrl() {
-        const currentPage = window.location.href;
-        const parts = currentPage.split('/');
-        const depth = parts.length - 6;
-        let relativePath = '';
-
-        for (let i = 0; i < depth; i++) {
-            relativePath += '../';
-        }
-
-        return relativePath + 'wp-admin/admin-ajax.php';
+        const depth = window.location.href.split('/').length - 6;
+        return `${'../'.repeat(depth)}wp-admin/admin-ajax.php`;
     }
 
     document.querySelectorAll('.menu-item a').forEach(menuLink => {
@@ -92,11 +85,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    const handleMouseMove = () => {
-        popupClose.style.visibility = 'visible';
-        popupClose.style.display = 'block';
-    };
-    const handleMouseOut = () => popupClose.style.visibility = 'hidden';
+    const handleMouseMove = () => popupClose.style.opacity = '1';
+    const handleMouseOut = () => popupClose.style.opacity = '0';
 
     popupContact.addEventListener('mousemove', handleMouseMove);
     popupContact.addEventListener('mouseout', handleMouseOut);

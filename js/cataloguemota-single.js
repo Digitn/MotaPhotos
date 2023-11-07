@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
-    if (document.body.classList.contains('single')) {
-        const photoPrincipale = document.querySelector('.photo-post-single');
-        const categoriePrincipale = photoPrincipale ? photoPrincipale.dataset.category : '';
-        const loadMoreBtn = document.querySelector('.load-more-btn');
-        const postId = loadMoreBtn.dataset.postId;
-        let offset = 2;
+    const photoPrincipale = document.querySelector('.photo-post-single');
+    const categoriePrincipale = photoPrincipale ? photoPrincipale.dataset.category : '';
+    const loadMoreBtn = document.querySelector('.load-more-btn');
+    let offset = 2;
 
-        function getAjaxUrl() {
-            const depth = window.location.href.split('/').length - 6;
-            return `${'../'.repeat(depth)}wp-admin/admin-ajax.php`;
-        }
+    function getAjaxUrl() {
+        const depth = window.location.href.split('/').length - 6;
+        return `${'../'.repeat(depth)}wp-admin/admin-ajax.php`;
+    }
 
+    if (loadMoreBtn){
         loadMoreBtn.addEventListener('click', function() {
+            const postId = loadMoreBtn.dataset.postId;
             const ajaxUrl = getAjaxUrl();
             fetch(ajaxUrl + `?action=load_more_cat_photos&offset=${offset}&post_id=${postId}&category=${categoriePrincipale}`)
             .then(response => response.json())
@@ -22,7 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     loadedPhotos.forEach(photo => {
                         const div = document.createElement('div');
                         div.className = 'photos-catalogue';
-                        div.innerHTML = `<img src="${photo.src}" class="photo-catalogue" alt="${photo.alt}" data-reference="Réf. photo : ${photo.reference}" data-category="Catégorie : ${photo.category}">`;
+                        div.innerHTML = `<img src="${photo.src}" class="photo-catalogue photo-catalogue-overlay" alt="${photo.alt}" 
+                                        data-reference="Réf. photo : ${photo.reference}" data-category="Catégorie : ${photo.category}"
+                                        data-post-id="${photo.post_id}">
+                                        <img src="../../wp-content/themes/MotaPhotos/assets/img/expand.png" class="photo-expand" alt="icon photo-expand">
+                                        <a href="${photo.detail_url}" target="_blank" class="photo-detail-link">
+                                            <img src="../../wp-content/themes/MotaPhotos/assets/img/eye-regular.png" class="photo-infolink" alt="icon photo-infolink">
+                                        </a>`;
                         container.appendChild(div);
                     });
 

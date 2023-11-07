@@ -24,9 +24,11 @@
                 </nav>
             </div>
         </div>
-        <div class="hero">
-            <h1>Photographe Event</h1>
-        </div>
+        <?php if ( is_front_page() ) : ?>
+            <div class="hero">
+                <h1>Photographe Event</h1>
+            </div>
+        <?php endif; ?>
     </header>
 
     <!-- Contenu de la page -->
