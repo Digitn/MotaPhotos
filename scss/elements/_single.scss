@@ -2,163 +2,188 @@
 .bloc-50{
     display: flex;
     flex: 1;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     width: 50%;
     max-width: 564px;
     padding: 5px;
     box-sizing: border-box;
+    @media screen and (max-width: $breakpoint__tablet){
+        width: 100%;
+    }
 }
 
 
-.picsinfo{
-    .bloc-info{
-        display: flex;
-        justify-content: space-between;
-        max-width: 1148px;
-        text-transform: uppercase;
-        margin: 25px auto 10px;
-        .infos-photo {
-            flex-direction: column;
-            align-self: flex-end;
-            gap: 20px;
-            border-bottom: solid 1px;
-            padding-bottom: 30px;
-            h1{
-                font-family: "Space Mono";
-                font-size: 66px;
-                line-height: 58px;
-                font-style: italic;
-                font-weight: bold;
-            }
-            p{
-                font-size: 14px;
-                line-height: 21px;
-            }           
-        }       
-        .photo-post {
-            position: relative;
-
-            .photo-post-single {
-                width: 100%;
-                height: auto;
-                position: relative;
-                object-fit: cover;
-            }
-            .photo-expand{
-                opacity: 0;
-                padding: 10px 9px;
-                position: absolute;
-                width: 34px;
-                height: 34px;
-                z-index: 900;
-                right: 15px;
-                background-image: url(./assets/img/background-expand.png);
-                background-size: cover;
-                top: 15px;
-            } 
-            &:hover{        
-                justify-content: center;
-                flex-wrap: nowrap; 
-                z-index: 1;
-                .photo-post-single-overlay{
-                    position: relative;
-                    filter: brightness(50%); 
-                    z-index: 1;
-                } 
-                .photo-expand{
-                    opacity: 1;
-                    transition: opacity ease-in-out 500ms;
-                    z-index: 900;
-                    &:hover{
-                        transform: scale(1.1);
-                        transition: transform 300ms;
-                        cursor: pointer;
-                    }
-                }              
-            }
-        }
-    }
-    .bloc-link{
-        display: flex;
-        justify-content: space-between;
-        max-width: 1148px;
-        text-transform: uppercase;
-        margin: 10px auto;
-        border-bottom: solid 1px;
-        padding-bottom: 10px;
-        .contact-link{
+.single{
+    .picsinfo{
+        .bloc-info{
             display: flex;
-            flex-direction: row;
             justify-content: space-between;
-            gap: 20px;
-            p{
-                text-transform: none;
-                font-family: 'Poppins';
-                font-size: 14px;
-                display: grid;
-                display: flex;
-                align-self: center;
+            max-width: 1148px;
+            text-transform: uppercase;
+            margin: 25px auto 10px;
+            @media screen and (max-width: $breakpoint__tablet){
+                flex-direction: column-reverse;
+                align-items: center;
             }
-            .contact-btn-preselect{
-                @include button;
-                margin: unset;
-                &:hover{
-                    @include button-hover
+            .infos-photo {
+                flex-direction: column;
+                align-self: flex-end;
+                gap: 20px;
+                border-bottom: solid 1px;
+                padding-bottom: 30px;
+                @media screen and (max-width: $breakpoint__tablet){
+                    flex-direction: column;
+                    padding-left: 20px;
+                    gap: 25px;
+                    align-self: center;
                 }
-                &:focus{
-                    transform: scale(0.95);
+                h1{
+                    font-weight: normal;
+                }
+                p{
+                    font-size: 14px;
+                    line-height: 21px;
+                }           
+            }       
+            .photo-post {
+                position: relative;
+    
+                .photo-post-single {
+                    width: 100%;
+                    height: auto;
+                    position: relative;
+                    object-fit: cover;
+                }
+                .photo-expand{
+                    opacity: 0;
+                    padding: 10px 9px;
+                    position: absolute;
+                    width: 34px;
+                    height: 34px;
+                    z-index: 900;
+                    right: 15px;
+                    background-image: url(./assets/img/background-expand.png);
+                    background-size: cover;
+                    top: 15px;
+                    animation: info-photos-effect 1.5s infinite;
+                } 
+                &:hover{        
+                    justify-content: center;
+                    flex-wrap: nowrap; 
+                    z-index: 1;
+                    .photo-post-single-overlay{
+                        position: relative;
+                        filter: brightness(50%); 
+                        z-index: 1;
+                    } 
+                    .photo-expand{
+                        opacity: 1;
+                        transition: opacity ease-in-out 500ms;
+                        z-index: 900;
+                        &:hover{
+                            transform: scale(1.1);
+                            transition: transform 300ms;
+                            cursor: pointer;
+                        }
+                    }              
                 }
             }
         }
-        .nav-link-photo{
-            margin-right: 5px;
-            .navigation{
-                margin: 0;
-                .nav-links{
-                    gap: 10px;
+        .bloc-link{
+            display: flex;
+            justify-content: space-between;
+            max-width: 1148px;
+            text-transform: uppercase;
+            margin: 10px auto;
+            border-bottom: solid 1px;
+            padding-bottom: 10px;
+            @media screen and (max-width: $breakpoint__tablet){
+                flex-wrap: wrap;
+                justify-content: center;
+                border-bottom: none;
+            }
+            .contact-link{
+                display: flex;
+                flex-direction: row;
+                gap: 50px;
+                @media screen and (max-width: $breakpoint__tablet){
+                    flex-direction: column;
+                    padding: 25px 20px;
+                    gap: 25px;
+                    border-bottom: solid 1px;
+                }
+                p{
+                    text-transform: none;
+                    font-family: 'Poppins';
+                    font-size: 14px;
+                    display: grid;
                     display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    .nav-previous, .nav-next{
-                        max-width: unset;
+                    align-self: center;
+                    @media screen and (max-width: $breakpoint__tablet){
+                        align-self: unset;
                     }
                 }
-                .meta-nav{
-                    width: 81px;
-                    text-transform: none;
-                    font-size: 12px;
-
-                    a {
-                        display: grid;
-                        width: 81px;
-                        height: auto;
-                        img{
-                            width: 81px;
-                            height: 71px;
-                            object-fit: cover;
-                            &:first-child:hover{
-                                outline: solid 2px $primary-color;
-                            }
+                .contact-btn-preselect{
+                    @include button;
+                    margin: unset;
+                    &:hover{
+                        @include button-hover
+                    }
+                    &:focus{
+                        transform: scale(0.95);
+                    }
+                }
+            }
+            .nav-link-photo{
+                margin-right: 5px;
+                @media screen and (max-width: $breakpoint__tablet){
+                    display: none;
+                }
+                .navigation{
+                    margin: 0;
+                    .nav-links{
+                        gap: 10px;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        .nav-previous, .nav-next{
+                            max-width: unset;
                         }
-                        .arrow{
+                    }
+                    .meta-nav{
+                        width: 81px;
+                        text-transform: none;
+                        font-size: 12px;
+                        a {
+                            display: grid;
                             width: 81px;
                             height: auto;
-                            padding: 15px 28px 5px;
+                            img{
+                                width: 81px;
+                                height: 71px;
+                                object-fit: cover;
+                            }
+                            .arrow{
+                                width: 81px;
+                                height: auto;
+                                padding: 15px 28px 5px;
+                            }
                             &:hover{
-                                transform: scale(1.2);
+                                transform: scale(1.05);
+                                transition-duration: 0.1s;
                             }
                         }
                     }
                 }
             }
         }
-    }
-    .picssame{
+        .picssame{
             max-width: 1148px;
             text-transform: uppercase;
             margin: 25px auto 10px;
             h3{
                 margin-bottom: 25px;
             }
+        }
     }
 }

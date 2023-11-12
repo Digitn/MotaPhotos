@@ -4,16 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadMoreBtn = document.querySelector('.load-more-btn');
     let offset = 2;
 
-    function getAjaxUrl() {
-        const depth = window.location.href.split('/').length - 6;
-        return `${'../'.repeat(depth)}wp-admin/admin-ajax.php`;
-    }
-
     if (loadMoreBtn){
         loadMoreBtn.addEventListener('click', function() {
             const postId = loadMoreBtn.dataset.postId;
-            const ajaxUrl = getAjaxUrl();
-            fetch(ajaxUrl + `?action=load_more_cat_photos&offset=${offset}&post_id=${postId}&category=${categoriePrincipale}`)
+            fetch(ajax_vars.ajaxurl + `?action=load_more_cat_photos&offset=${offset}&post_id=${postId}&category=${categoriePrincipale}`)
             .then(response => response.json())
             .then(data => {
                 if(data.success) {
@@ -25,9 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         div.innerHTML = `<img src="${photo.src}" class="photo-catalogue photo-catalogue-overlay" alt="${photo.alt}" 
                                         data-reference="Réf. photo : ${photo.reference}" data-category="Catégorie : ${photo.category}"
                                         data-post-id="${photo.post_id}">
-                                        <img src="../../wp-content/themes/MotaPhotos/assets/img/expand.png" class="photo-expand" alt="icon photo-expand">
-                                        <a href="${photo.detail_url}" target="_blank" class="photo-detail-link">
+                                        <div class="photo-detail-expand">
+                                            <img src="../../wp-content/themes/MotaPhotos/assets/img/expand.png" class="photo-expand" alt="icon photo-expand">
+                                            <p class="photo-expand-message">Agrandir cette photo</p>
+                                        </div>
+                                        <a href="${photo.detail_url}" class="photo-detail-link">
                                             <img src="../../wp-content/themes/MotaPhotos/assets/img/eye-regular.png" class="photo-infolink" alt="icon photo-infolink">
+                                            <p class="photo-infolink-message">Plus d'infos sur cette photo</p>
                                         </a>`;
                         container.appendChild(div);
                     });

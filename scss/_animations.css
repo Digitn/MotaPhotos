@@ -1,1 +1,0 @@
-@keyframes popupmove{from{transform:translateX(-50%) translateY(100%)}to{transform:translateX(-50%) translateY(-50%)}}@keyframes textmove{to{transform:translateX(0)}}@keyframes filter-textmove-open{from{transform:translateY(50px)}to{transform:translateY(0)}}@keyframes filter-textmove-close{from{transform:translateY(0)}to{transform:translateY(50px)}}

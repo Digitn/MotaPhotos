@@ -9,6 +9,7 @@
 		'menu_id' => 'footer-menu',
 		'container' => 'nav',
 	));
+	wp_footer();
 ?>
 </footer>
 </body>

@@ -7,6 +7,31 @@
         transform: translateX(-50%) translateY(-50%);
     }
 }
+
+//Apparition menu mobile
+@keyframes menumove {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+//Apparition liens menu mobile
+@keyframes linkmenumove {
+    from {
+        opacity: 0;
+        transform: translateY(250%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 //Animation titre popup
 @keyframes textmove {
     to {
@@ -34,4 +59,37 @@
     }
 }
 
+//Effet icone expand et info-lonk sur les photos
+@keyframes info-photos-effect{
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(0.9);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
 
+//Apparition messages infos photos
+@keyframes textexpandmove {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+@keyframes textlinkmove {
+    from {
+        opacity: 0;
+        transform: translateY(350%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

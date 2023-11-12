@@ -9,8 +9,8 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
     <header>
-        <div class="barmenu">
-            <div class="topmenu">
+        <div id="barmenu">
+            <div id="topmenu">
                 <!-- Logo -->
                 <a href="<?php echo home_url(); ?>"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/Logo.png" alt="Logo Motaphoto" id="logo"></a>
                 <!-- Navigation -->
@@ -22,6 +22,11 @@
                         ) );
                     ?>
                 </nav>
+                <button class="menu-toggle">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
             </div>
         </div>
         <?php if ( is_front_page() ) : ?>

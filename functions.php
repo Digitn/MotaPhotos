@@ -8,22 +8,207 @@ add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles' );
 
 
 function motaphoto_scripts() {
-    wp_enqueue_script( 'popupmota', get_stylesheet_directory_uri() . '/js/popupmota.js', array(), null, false );
-    if ( is_front_page() ) {
-        wp_enqueue_script( 'cataloguemota-page', get_stylesheet_directory_uri() . '/js/cataloguemota-page.js', array(), null, false );
-        wp_enqueue_script( 'lightboxmota-page', get_stylesheet_directory_uri() . '/js/lightboxmota-page.js', array(), null, false );
+    //wp_register_script( 'menumobilemota', get_stylesheet_directory_uri() . '/js/menumobilemota.js', array(), null, true );
+    wp_register_script( 'swiperjs', 'https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js', array(), null, true );
+    wp_register_script( 'swipermota', get_stylesheet_directory_uri() . '/js/swipermota.js', array('swiper'), null, true );
+
+    $inline_script = <<<EOD
+    function loadScript(src, id) {
+        // Si le script avec l'ID spécifié existe déjà, ne le charge pas à nouveau
+        if (document.getElementById(id)) return;
+    
+        var script = document.createElement("script");
+        script.src = src;
+        script.id = id;
+        script.async = false;
+        document.head.appendChild(script);
     }
-    if ( is_single() || is_category() ) {
-        wp_enqueue_script( 'cataloguemota-single', get_stylesheet_directory_uri() . '/js/cataloguemota-single.js', array(), null, false );
-        wp_enqueue_script( 'lightboxmota-single', get_stylesheet_directory_uri() . '/js/lightboxmota-single.js', array(), null, false );
+    
+    window.addEventListener("load", function() {
+        var screenWidth = window.innerWidth;
+        if (screenWidth <= 768) {
+            loadScript("https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js");
+            loadScript("./wp-content/themes/MotaPhotos/js/swipermota.js", "swipermota-script");
+        }
+    });
+    
+    window.addEventListener("resize", function() {
+        var screenWidth = window.innerWidth;
+        if (screenWidth <= 768) {
+            loadScript("https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js");
+            loadScript("./wp-content/themes/MotaPhotos/js/swipermota.js", "swipermota-script");
+        }
+    });    
+    EOD;
+
+    // Ajouter les scripts personnalisés selon les conditions
+    if (is_front_page()) {
+        wp_enqueue_script('cataloguemota-page', get_stylesheet_directory_uri() . '/js/cataloguemota-page.js', array(), null, true);
+        wp_enqueue_script('lightboxmota-page', get_stylesheet_directory_uri() . '/js/lightboxmota-page.js', array(), null, true);
+        wp_add_inline_script('popupmota', $inline_script);
+    }
+
+    if (is_single() || is_category()) {
+        wp_enqueue_script('cataloguemota-single', get_stylesheet_directory_uri() . '/js/cataloguemota-single.js', array(), null, true);
+        wp_enqueue_script('lightboxmota-single', get_stylesheet_directory_uri() . '/js/lightboxmota-single.js', array(), null, true);
+    }
+
+    // Scripts toujours nécessaires
+    wp_enqueue_script('menumota', get_stylesheet_directory_uri() . '/js/menumota.js', array(), null, true);
+    wp_enqueue_script('popupmota', get_stylesheet_directory_uri() . '/js/popupmota.js', array(), null, true);
+
+    // Localiser les scripts pour l'AJAX
+    wp_localize_script('popupmota', 'ajax_vars', array('ajaxurl' => admin_url('admin-ajax.php')));
+}
+
+add_action('wp_enqueue_scripts', 'motaphoto_scripts');
+    
+
+
+//**************************************** */
+// Menu admin - thème WP Motaphotos
+//**************************************** */
+function motaphoto_login_logo_url() {
+    return home_url(); // URL à laquelle le logo doit pointer
+}
+add_filter('login_headerurl', 'motaphoto_login_logo_url');
+
+function motaphoto_login_logo_url_title() {
+    return 'Nathalie Mota'; 
+}
+add_filter('login_headertext', 'motaphoto_login_logo_url_title');
+
+function motaphoto_login_message($message) {
+    if (empty($message)) {
+        return "<p class='message'>Bienvenue sur l'interface de connexion de votre site web</p>";
+    } else {
+        return $message;
     }
 }
-add_action( 'wp_enqueue_scripts', 'motaphoto_scripts' );
+add_filter('login_message', 'motaphoto_login_message');
 
 
-// Menu admin - thème WP Motaphotos
+function motaphoto_custom_login_style() {
+    echo '<style type="text/css">
+            @font-face {
+            font-family: \'Space Mono\';
+            src: url(' . get_template_directory_uri() . '/assets/fonts/SpaceMono-Regular.ttf) format(\'truetype\'),
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+            }
+            @font-face {
+                font-family: \'Space Mono Bold\';
+                src: url(' . get_template_directory_uri() . '/assets/fonts/SpaceMono-Bold.ttf) format(\'truetype\'),
+                font-weight: bold;
+                font-style: normal;
+                font-display: swap;
+                }
+            body.login {
+                background-image: url(' . get_template_directory_uri() . '/assets/img/banner.webp); 
+                background-size: cover;
+                background-blend-mode: color-burn;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: \'Space Mono\';
+            }
+            #login{
+                display: flex;
+                align-content: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                margin: auto;
+                position: absolute;
+                padding: 0;
+                width: 300px;
+            }
+            .login .message, .login .notice, .login .success {
+                border-left: 4px solid #e00000;
+                width: 320px;
+                font-size: 13px;
+                display: flex;
+                text-align: center;
+            }
+            #login label{
+                cursor: default;
+            }
+            #login .button-primary{
+                background: #000;
+                border-color: #000;
+                border-radius: 2px;
+                float: unset;
+                margin: 20px auto 0px;
+                display: flex;
+                width: 175px;
+                justify-content: center;
+                height: 45px;
+                align-items: center;
+                align-content: center;
+                flex-wrap: wrap;
+                font-size: 16px;
+            }
+            #login .button-secondary {
+                color: #000;
+            }
+            #login .button-secondary:focus {
+                border-color: unset; 
+                box-shadow: none;
+            }
+            #login .button-primary:hover{
+                transform: scale(1.02);
+            }
+            #login .button-primary:active{
+                transform: scale(0.98);
+            }
+            #login .button-primary:focus{
+                box-shadow: none;
+            }
+            #login .button-primary:focus-visible{
+                border-radius: 2px;
+            }
+            #login input[type=text]:focus, #login input[type=password]:focus{
+                border-color: #e00000;
+                box-shadow: 0 0 0 1px #e00000;
+            }
+            body.login div#login h1 a {
+                background-image: url(' . get_template_directory_uri() . '/assets/img/Logo.png); 
+                background-size: contain; /* Ajustez la taille du logo */
+                mix-blend-mode: hard-light;
+                width: 300px;
+                height: auto;
+            }
+            #login #nav a:hover, #login #backtoblog a:hover{
+                color: #000;
+                font-weight: bold;
+                transform: scale(1.02);
+            }
+            .login form {
+                margin-top:0;
+                border: 2px solid #000;
+            }
+            .login .language-switcher, .login .privacy-policy-page-link, .login .forgetmenot { 
+                display: none; 
+            }
 
-// Section Paramètres
+        </style>';
+}
+add_action('login_head', 'motaphoto_custom_login_style');
+
+
+
+function motaphotos_admin_scripts($hook) {
+    if ('toplevel_page_motaphotos-settings' !== $hook) {
+        return;
+    }
+    wp_enqueue_media();
+    wp_enqueue_script('motaphotos-admin-js', get_template_directory_uri() . '/js/admin.js', array(), '1.0', true);
+}
+add_action('admin_enqueue_scripts', 'motaphotos_admin_scripts');
+
+
+//Ajout menu perso MotaPhotos dans interface admin
+// Section Paramètres perso
 function motaphotos_add_admin_pages() {
     add_menu_page(
         __('Votre thème Motaphotos', 'motaphotos'),
@@ -35,10 +220,10 @@ function motaphotos_add_admin_pages() {
         60
     );
 }
-//Section Historique
+//Section Historique de modifications du site
 function motaphotos_theme_settings() {
     echo '<h1>' . esc_html(get_admin_page_title()) . '</h1>';
-    echo '<form action="options.php" method="post" name="motaphotos_settings">';
+    echo '<form action="options.php" method="post" name="motaphotos_settings" enctype="multipart/form-data">';
     echo '<div>';
     settings_fields('motaphotos_settings_fields');
     do_settings_sections('motaphotos_settings_section');
@@ -49,12 +234,29 @@ function motaphotos_theme_settings() {
     motaphotos_dev_section_introduction(); 
 }
 
-// Champs de saisie informations interventions
+//Enregistrement favicon
+function motaphotos_favicon() {
+    $favicon_url = get_option('motaphotos_favicon_url'); 
+    if (!empty($favicon_url)) {
+        echo '<link rel="icon" href="' . esc_url($favicon_url) . '" sizes="32x32" />';
+    }
+}
+add_action('wp_head', 'motaphotos_favicon');
+
+function motaphotos_admin_favicon() {
+    $favicon_url = get_option('motaphotos_favicon_url'); // Remplacez par l'URL de votre favicon.
+    echo '<link rel="icon" href="' . esc_url($favicon_url) . '" sizes="32x32" />';
+}
+add_action('admin_head', 'motaphotos_admin_favicon');
+
+
+// Champs de saisie informations interventions développeurs
 function motaphotos_settings_register() {
     register_setting('motaphotos_settings_fields', 'motaphotos_settings_fields', 'motaphotos_settings_fields_validate');
     add_settings_section('motaphotos_settings_section', __('Paramètres', 'motaphotos'), 'motaphotos_settings_section_introduction', 'motaphotos_settings_section');
     add_settings_field('motaphotos_settings_field_slogan', __('Slogan', 'motaphotos'), 'motaphotos_settings_field_slogan_output', 'motaphotos_settings_section', 'motaphotos_settings_section');
     add_settings_field('motaphotos_settings_field_introduction', __('Introduction', 'motaphotos'), 'motaphotos_settings_field_introduction_output', 'motaphotos_settings_section', 'motaphotos_settings_section');
+    add_settings_field('motaphotos_settings_field_favicon', __('Favicon', 'motaphotos'), 'motaphotos_settings_field_favicon_output', 'motaphotos_settings_section', 'motaphotos_settings_section');
     add_settings_field('motaphotos_settings_field_phone_number', __('Numéro de téléphone', 'motaphotos'), 'motaphotos_settings_field_phone_number_output', 'motaphotos_settings_section', 'motaphotos_settings_section');
     add_settings_field('motaphotos_settings_field_email', __('Email', 'motaphotos'), 'motaphotos_settings_field_email_output', 'motaphotos_settings_section', 'motaphotos_settings_section');
 }
@@ -65,6 +267,9 @@ function motaphotos_settings_fields_validate($inputs) {
     }
     if (!empty($_POST['motaphotos_settings_field_introduction'])) {
         update_option('motaphotos_settings_field_introduction', $_POST['motaphotos_settings_field_introduction']);
+    }
+    if (!empty($_POST['motaphotos_favicon_url'])) {
+        update_option('motaphotos_favicon_url', $_POST['motaphotos_favicon_url']);
     }
     if (!empty($_POST['motaphotos_settings_field_phone_number'])) {
         update_option('motaphotos_settings_field_phone_number', $_POST['motaphotos_settings_field_phone_number']);
@@ -85,6 +290,11 @@ function motaphotos_settings_field_slogan_output() {
 function motaphotos_settings_field_introduction_output() {
     $value = get_option('motaphotos_settings_field_introduction');
     echo '<input name="motaphotos_settings_field_introduction" type="text" value="' . $value . '" />';
+}
+function motaphotos_settings_field_favicon_output() {
+    $favicon_url = get_option('motaphotos_favicon_url');
+    echo '<input type="text" name="motaphotos_favicon_url" value="' . esc_attr($favicon_url) . '" readonly /></br></br>'; 
+    echo '<input type="button" class="button" value="' . __('Sélectionner un Favicon', 'motaphotos') . '" id="upload-favicon-button">';
 }
 function motaphotos_settings_field_phone_number_output() {
     $value = get_option('motaphotos_settings_field_phone_number');
@@ -298,8 +508,6 @@ add_action('wp_ajax_nopriv_get_and_display_photos', 'get_and_display_photos');
 
 
 
-
-
 // Page single : Récupérer les références des photos en AJAX
 function get_photo_references() {
     $args = array(
@@ -366,7 +574,6 @@ add_action('wp_ajax_nopriv_load_more_cat_photos', 'load_more_cat_photos');
 
 
 function load_cat_photos() {
-    // Assurez-vous que l'ID du post est envoyé
     $post_id = isset($_GET['post_id']) ? (int) $_GET['post_id'] : 0;
     if (!$post_id) {
         wp_send_json_error('Aucun ID de publication fourni');

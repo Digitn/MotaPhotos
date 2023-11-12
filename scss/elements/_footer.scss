@@ -3,18 +3,35 @@
     display: flex;
     flex-wrap: wrap;
     border-top: solid 1px $primary-color-light;
+    position:static;
+    width: 100%;
     .menu-menu-pied-de-page-container{
         display: flex;
         justify-content: center;
         max-width: 1440px;
         margin: auto;
         height:40px;
+        @media screen and (max-width: $breakpoint__tablet) {
+            flex-direction: column;
+            height: auto;
+            padding: 20px;
+        }    
         #footer-menu {
             margin: 8px 0;
-            @include menu;           
+            display: flex;
+            @include menu; 
+            @media screen and (max-width: $breakpoint__tablet) {
+                flex-direction: column;
+                margin: 20px 0;
+            }   
             li{
                 padding: 0 45px;
                 font-size: 16px;
+                @media screen and (max-width: $breakpoint__tablet) {
+                    display: flex;
+                    justify-content: center;
+                    padding: 10px;
+                }  
             }
             .active a{
                 color: $primary-color-light;

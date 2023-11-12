@@ -53,15 +53,15 @@ while ( have_posts() ) :
 			<div class="nav-link-photo">
 				<?php
 				// Previous/next post navigation.
-				$arrow_left = get_stylesheet_directory_uri() . '/assets/img/Line 6.svg';
-				$arrow_right = get_stylesheet_directory_uri() . '/assets/img/Line 7.svg';
+				$arrow_left = get_stylesheet_directory_uri() . '/assets/img/Lineleft.svg';
+				$arrow_right = get_stylesheet_directory_uri() . '/assets/img/Lineright.svg';
 				$next_post_image = get_field('affichage_photo', get_next_post());
 				$prev_post_image = get_field('affichage_photo', get_previous_post());
 
 				the_post_navigation(
 					array(
-						'next_text' => '<p class="meta-nav">' . '<img src="' . $next_post_image . '" alt="Next Image">' . '<img src="' . $arrow_right . '"class="arrow" alt="Next Image">',
-						'prev_text' => '<p class="meta-nav">' . '<img src="' . $prev_post_image . '" alt="Previous Image">' . '<img src="' . $arrow_left . '"class="arrow" alt="Previous Image">',
+						'next_text' => '<p class="meta-nav">' . '<img src="' . $next_post_image . '" class="skip-lazy" alt="Next Image">' . '<img src="' . $arrow_right . '"class="arrow skip-lazy" alt="Next Image">',
+						'prev_text' => '<p class="meta-nav">' . '<img src="' . $prev_post_image . '" class="skip-lazy" alt="Previous Image">' . '<img src="' . $arrow_left . '"class="arrow skip-lazy" alt="Previous Image">',
 					)
 				);
 				?>
@@ -94,9 +94,13 @@ while ( have_posts() ) :
 								data-reference="Réf. photo : <?= get_field('reference_photo') ?>" 
 								data-category="Catégorie : <?= get_the_category()[0]->name ?>"
 								data-post-id="<?= get_the_ID() ?>">
-							<img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/expand.png" class="photo-expand" alt="icon photo-expand">
-							<a href="<?= get_permalink() ?>" target="_blank" class="photo-detail-link">
+							<div class="photo-detail-expand">
+								<img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/expand.png" class="photo-expand" alt="icon photo-expand">
+								<p class="photo-expand-message">Agrandir cette photo</p>
+							</div>
+							<a href="<?= get_permalink() ?>" class="photo-detail-link">
 								<img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/eye-regular.png" class="photo-infolink" alt="icon photo-infolink">
+								<p class="photo-infolink-message">Plus d'infos sur cette photo</p>
 							</a>
 						</div>
 						<?php

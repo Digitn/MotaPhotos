@@ -11,11 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let photosArray = [];
     let currentPhotoIndex = 0; 
 
-    function getAjaxUrl() {
-        const depth = window.location.href.split('/').length - 6;
-        return `${'../'.repeat(depth)}wp-admin/admin-ajax.php`;
-    }
-
     function fetchPhotos() {
         const currentFilters = getCurrentFilters();
         const data = {
@@ -23,8 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ...currentFilters
         };
 
-        const ajaxUrl = getAjaxUrl();
-        fetch(ajaxUrl, {
+        fetch(ajax_vars.ajaxurl, {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
@@ -84,8 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateLightboxImage() {
         const photo = photosArray[currentPhotoIndex];
         lightboxImage.src = photo.photo_url;
-        imageReference.textContent = "Réf. photo : " + photo.reference;
-        imageCategory.textContent = "Catégorie : " + photo.category;
+        imageReference.textContent = "Réf. photo: " + photo.reference;
+        imageCategory.textContent = "Catégorie: " + photo.category;
         updateNavigationButtonsVisibility();
     }
 
@@ -125,3 +119,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mise à jour de la lightbox au chargement de la page
     fetchPhotos();
 });
+

@@ -9,13 +9,13 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
 @import "scss/fonts";
+@import "scss/breakpoints";
 @import "scss/variables";
 @import "scss/mixins";
 @import "scss/animations";
 @import "scss/byelements";
 
-
-//Général
+//**Général
 * {
     margin: 0;
     padding: 0;
@@ -24,8 +24,21 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 body{
     margin: 0;
+    header{
+        margin-top: 80px;
+    }
     #content{
-        margin: 0 15px;
+        padding: 10px 25px 25px;
+        max-width: 1148px;
+        margin: 0 auto;
+    }
+}
+
+.swiper{
+
+    scrollbar-width: none; 
+    &::-webkit-scrollbar {
+        display: none;
     }
 }
 
@@ -41,6 +54,12 @@ h1{
     font-style: italic;
     font-weight: bold;
     margin-top: 30px;
+    @media screen and (max-width: $breakpoint__small_laptop){
+        font-size: 3rem;
+    }
+    @media screen and (max-width: $breakpoint__medium_phone){
+        font-size: 2.2rem;
+    }
 }
 
 h1, h2, h3{
@@ -50,11 +69,14 @@ h1, h2, h3{
 a{
     text-decoration: none;
     &:hover{
-        color: $secondary-color;
+        font-weight: bold;
     }
 }
 .photos-container-btn{
     @include button;
+    margin: 0 auto;
+    position: relative;
+    top: -40px;
     &:hover{
         @include button-hover
     }
@@ -68,4 +90,12 @@ a{
     margin: 60px auto 30px;
 }
 
+:focus-visible::not(.textarea){
+    outline: $secondary-color auto 1px;
+}
+
+.is-active {
+    display: flex;
+
+}
 

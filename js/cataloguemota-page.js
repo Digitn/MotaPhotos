@@ -6,11 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let offset = 0; 
     const photosContainer = document.querySelector('.photos-container');
 
-    function getAjaxUrl() {
-        const depth = window.location.href.split('/').length - 6;
-        return `${'../'.repeat(depth)}wp-admin/admin-ajax.php`;
-    }
-
     function displayPhotos() {
         let existingDivs = photosContainer.querySelectorAll('.photos-catalogue');
         const photosToDisplay = photosData.slice(0, displayedPhotos + photosPerLoad);
@@ -34,9 +29,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         <img src="${photo.photo_url}" class="photo-catalogue photo-catalogue-overlay" alt="${photo.title}"
                         data-reference="Réf. photo : ${photo.reference}"
                         data-category="Catégorie : ${photo.category}">
-                        <img src="./wp-content/themes/MotaPhotos/assets/img/expand.png" class="photo-expand" alt="icon photo-expand">
-                        <a href="${photo.detail_url}" target="_blank" class="photo-detail-link">
+                        <div class="photo-detail-expand">
+                            <img src="./wp-content/themes/MotaPhotos/assets/img/expand.png" class="photo-expand" alt="icon photo-expand">
+                            <p class="photo-expand-message">Agrandir cette photo</p>
+                        </div>
+                        <a href="${photo.detail_url}" class="photo-detail-link">
                             <img src="./wp-content/themes/MotaPhotos/assets/img/eye-regular.png" class="photo-infolink" alt="icon photo-infolink">
+                            <p class="photo-infolink-message">Plus d'infos sur cette photo</p>
                         </a>
                     </div>`);
             }
@@ -53,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
     function loadPhotos() {
-        const url = getAjaxUrl();
         const params = new URLSearchParams();
         params.append('action', 'get_and_display_photos');
         params.append('offset', offset);
@@ -61,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         params.append('format_photo', currentFilters.format);
         params.append('date_photo', currentFilters.sort);
         
-        fetch(url, {
+        fetch(ajax_vars.ajaxurl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -135,107 +133,84 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Fonction permettant de customiser le css des <select> de formulaire
     function initCustomSelects() {
-        document.querySelectorAll('select').forEach(function (selectElement) {
-            if (selectElement.closest('.wpcf7-form')) {
-                return;
-            }
+        document.querySelectorAll('select:not(.wpcf7-form select)').forEach(function (selectElement) {
             var numberOfOptions = selectElement.children.length;
             selectElement.classList.add('s-hidden');
-        
+
             var divWrapper = document.createElement('div');
             divWrapper.classList.add('select');
             selectElement.parentNode.insertBefore(divWrapper, selectElement);
             divWrapper.appendChild(selectElement);
-        
+
             var styledSelect = document.createElement('div');
             styledSelect.classList.add('styledSelect');
             styledSelect.textContent = selectElement.children[0].textContent;
             divWrapper.appendChild(styledSelect);
-        
+
             var list = document.createElement('ul');
             list.classList.add('options');
             divWrapper.appendChild(list);
-        
+
             for (var i = 0; i < numberOfOptions; i++) {
                 var listItem = document.createElement('li');
                 listItem.textContent = selectElement.children[i].textContent;
                 listItem.setAttribute('rel', selectElement.children[i].value);
                 list.appendChild(listItem);
             }
-        
-            var listItems = list.children;
-        
+
             styledSelect.addEventListener('click', function (e) {
                 e.stopPropagation();
-                const isActive = this.classList.contains('active');
-                const optionsList = this.nextElementSibling;
-            
-                document.querySelectorAll('.styledSelect.active').forEach(function (activeStyledSelect) {
-                    activeStyledSelect.classList.remove('active');
-                    activeStyledSelect.nextElementSibling.classList.remove('options-open');
-                    activeStyledSelect.nextElementSibling.classList.add('options-close');
-                });
-            
-                if (!isActive) {
-                    this.classList.add('active');
-                    optionsList.classList.add('options-open');
-                    optionsList.classList.remove('options-close');
-                    setTimeout(() => {
-                        optionsList.style.visibility = 'visible';
-                    }, 0); 
-                } else {
-                    optionsList.classList.remove('options-open');
-                    optionsList.classList.add('options-close');
-                    setTimeout(() => {
-                        optionsList.style.visibility = 'hidden';
-                    }, 0); 
-                }
+                toggleOptionsList(this, list);
             });
 
-            Array.from(listItems).forEach(function (listItem) {
+            Array.from(list.children).forEach(function (listItem) {
                 listItem.addEventListener('click', function (e) {
                     e.stopPropagation();
                     styledSelect.textContent = this.textContent;
                     selectElement.value = this.getAttribute('rel');
                     selectElement.dispatchEvent(new Event('change'));
-                    updateSelectedOption(styledSelect, this.getAttribute('rel'), selectElement);
-            
-                    // Fermez la liste d'options
-                    const optionsList = styledSelect.nextElementSibling;
-                    optionsList.classList.remove('options-open');
-                    optionsList.classList.add('options-close');
-                    setTimeout(() => {
-                        optionsList.style.visibility = 'hidden';
-                    }, 500);
-                    styledSelect.classList.remove('active');
+                    toggleOptionsList(styledSelect, list, true);
                 });
-            });           
+            });
         });
 
-        function updateSelectedOption(styledSelect, selectedValue, selectElement) {
-            const optionsList = styledSelect.nextElementSibling;
-            if (optionsList) {
-                Array.from(optionsList.children).forEach(function (listItem) {
-                    if (listItem.getAttribute('rel') === selectedValue) {
-                        listItem.classList.add('option-filter-selected');
-                    } else {
-                        listItem.classList.remove('option-filter-selected');
-                    }
-                });
+        function toggleOptionsList(styledSelect, list, close = false) {
+            if (!close) {
+                var isActive = styledSelect.classList.contains('active');
+                if (!isActive) {
+                    closeAllSelects(); // Ferme toutes les autres listes déroulantes
+                    styledSelect.classList.add('active');
+                    list.classList.add('options-open');
+                    list.classList.remove('options-close');
+                } else {
+                    styledSelect.classList.remove('active');
+                    list.classList.remove('options-open');
+                    list.classList.add('options-close');
+                }
+            } else {
+                styledSelect.classList.remove('active');
+                list.classList.remove('options-open');
+                list.classList.add('options-close');
             }
-        }                    
+        }
+
+        function closeAllSelects() {
+            document.querySelectorAll('.styledSelect').forEach(function (select) {
+                select.classList.remove('active');
+            });
+            document.querySelectorAll('.options').forEach(function (optionList) {
+                optionList.classList.remove('options-open');
+                optionList.classList.add('options-close');
+            });
+        }
 
         document.addEventListener('click', function () {
-            document.querySelectorAll('.styledSelect').forEach(function (styledSelect) {
-                styledSelect.classList.remove('active');
-            });
-            document.querySelectorAll('.options').forEach(function (optionsList) {
-                optionsList.classList.remove('options-open');
-                optionsList.classList.add('options-close');
-            });
+            closeAllSelects();
         });
-        cacherOptionsNull();        
+
+        cacherOptionsNull();
     }
+
 
     function cacherOptionsNull() {
         document.querySelectorAll('.select').forEach(function(selectWrapper) {
@@ -263,5 +238,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     loadPhotos();
     initCustomSelects();
-});    
+});  
+
 

@@ -16,10 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function loadPhotoReferences() {
-        const ajaxUrl = getAjaxUrl();
         const action = 'get_photo_references';
 
-        fetch(`${ajaxUrl}?action=${action}`)
+        fetch(`${ajax_vars.ajaxurl}?action=${action}`)
             .then(response => response.json())
             .then(data => {
                 data.sort();
@@ -53,11 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const referenceValue = photoRef.getAttribute('data-reference').split(':')[1].trim();
             selectField.value = referenceValue;
         }
-    }
-
-    function getAjaxUrl() {
-        const depth = window.location.href.split('/').length - 6;
-        return `${'../'.repeat(depth)}wp-admin/admin-ajax.php`;
     }
 
     document.querySelectorAll('.menu-item a').forEach(menuLink => {

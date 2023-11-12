@@ -3,21 +3,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const lightboxImage = lightbox.querySelector('.lightbox-image');
     const imageReference = lightbox.querySelector('.image-reference');
     const imageCategory = lightbox.querySelector('.image-category');
-    const closeLightbox = lightbox.querySelector('.lightbox-close');
-    const nextButton = lightbox.querySelector('.lightbox-next-photo');
-    const previousButton = lightbox.querySelector('.lightbox-previous-photo');
+    const closeLightboxButtons = document.querySelectorAll('.lightbox-close');
+    const nextButton = document.querySelector('.lightbox-next-photo');
+    const previousButton = document.querySelector('.lightbox-previous-photo');
 
     let imagesInCategory = [];
     let currentImageIndex = 0;
-
-    function getAjaxUrl() {
-        const depth = window.location.href.split('/').length - 6;
-        return `${'../'.repeat(depth)}wp-admin/admin-ajax.php`;
-    }
     
     function fetchImagesInCategory(postId, src) {
-        const ajaxUrl = getAjaxUrl();
-        fetch(`${ajaxUrl}?action=load_cat_photos&post_id=${postId}`)
+        fetch(`${ajax_vars.ajaxurl}?action=load_cat_photos&post_id=${postId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -47,8 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const image = imagesInCategory[index];
             lightboxImage.src = image.src;
             lightboxImage.alt = image.alt;
-            imageReference.textContent = "Réf. photo : " + image.reference;
-            imageCategory.textContent = "Catégorie : " + image.category;
+            imageReference.textContent = "Réf. photo: " + image.reference;
+            imageCategory.textContent = "Catégorie: " + image.category;
             currentImageIndex = index;
             toggleNavigation();
         }
@@ -59,9 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
         nextButton.style.visibility = currentImageIndex === imagesInCategory.length - 1 ? 'hidden' : 'visible';
     }
 
-    closeLightbox.addEventListener('click', function() {
-        lightbox.style.display = 'none';
-        clearLightboxInfo();
+    closeLightboxButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            lightbox.style.display = 'none';
+            clearLightboxInfo();
+        });
     });
 
     document.addEventListener('keydown', function(e) {

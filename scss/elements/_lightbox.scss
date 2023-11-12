@@ -6,12 +6,30 @@
     .lightbox-close {
         position: absolute;
         width: 2.5vw;
+        height: auto;
         min-width: 20px;
+        color: $body-color;
+        cursor: pointer;
+    }
+    .lightbox-close-desk{
+        display: flex;
         top: -8vh;
         right: -5vw;
-        color: #fff;
-        font-size: 24px;
-        cursor: pointer;
+    }
+    .lightbox-close-resp{
+        display: none;
+    }
+    @media screen and (max-width : $breakpoint__large_tablet){
+        .lightbox-close-desk{
+            display: none;
+        }
+        .lightbox-close-resp{
+            display: flex;
+            z-index: 100;
+            top: 20px;
+            right: 20px;
+            width: 25px;
+        }
     }
 }
 .lightbox-overlay{
@@ -29,8 +47,12 @@
         text-align: center;
         top: 5%;
         .lightbox-image {
-            max-width: 70vw;
-            max-height: 70vh;
+            max-width: 80vw;
+            max-height: 80vh;
+            @media screen and (max-width : $breakpoint__medium_phone) {
+                max-width: 90vw;
+                max-height: 80vh;        
+            }
         }
         .image-details {
             display: flex;
@@ -39,31 +61,86 @@
             p{
                 text-transform: uppercase;
                 font-size: 14px;;
-                color: $body-color
+                color: $body-color;
+                @media screen and (max-width : $breakpoint__phone) {
+                    font-size: 12px;
+                }
             }
         }
     }
-    .lightbox-previous-photo, .lightbox-next-photo{
+    .lightbox-nav-photo{
         display: flex;
         align-items: center;
         flex-direction: row;
         gap: 10px;
-        position: relative;
+        position: absolute;
         &:hover{
             cursor: pointer;
+        }
+        @media screen and (max-width : $breakpoint__tablet) {
+            top: 50%;
         }
         p{
             color: $body-color;
             text-transform: none;
+            @media screen and (max-width : $breakpoint__medium_desktop) {
+                display: none;
+            }
         }
         .lightbox-white-arrow-left, .lightbox-white-arrow-right{
             width: 36px;
+            @media screen and (max-width : $breakpoint__medium_desktop) {
+                display: none;
+            }
         }
+        .lightbox-white-arrow-left-resp, .lightbox-white-arrow-right-resp{
+            display: none;
+            width: 70px;
+            height: auto;
+            @media screen and (max-width : $breakpoint__medium_desktop) {
+                display: flex;
+            }
+            @media screen and (max-width : $breakpoint__tablet) {
+                width: 60px;
+            }
+            @media screen and (max-width : $breakpoint__tablet) {
+                width: 40px;
+            }
+        }
+
     }
     .lightbox-previous-photo{
-        right: 30px;
+        left: 3vw;
+        z-index: 10;
+        @media screen and (max-width : $breakpoint__desktop) {
+            left: 2vw;        
+        }
+        @media screen and (max-width : $breakpoint__small_laptop) {
+            left: 1.5vw;        
+        }
+        @media screen and (max-width : $breakpoint__large_tablet) {
+            left: 1vw;        
+        }
+        @media screen and (max-width : $breakpoint__medium_phone) {
+            left: 4vw; 
+            animation: info-photos-effect 1.5s infinite 0.75s;       
+        }
     }
     .lightbox-next-photo{
-        left: 30px;
+        right: 3vw;
+        z-index: 10;
+        @media screen and (max-width : $breakpoint__desktop) {
+            right: 2vw;
+        }
+        @media screen and (max-width : $breakpoint__small_laptop) {
+            right: 1.5vw;
+        }
+        @media screen and (max-width : $breakpoint__large_tablet) {
+            right: 1vw;
+        }
+        @media screen and (max-width : $breakpoint__medium_phone) {
+            right: 4vw;
+            animation: info-photos-effect 1.5s infinite 0.75s;               
+        }
     }
 }
