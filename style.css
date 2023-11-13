@@ -576,7 +576,6 @@ body.admin-bar #barmenu {
   margin: 60px auto 0;
   height: 220px;
   overflow: auto hidden;
-  width: calc(100vw - 50px);
   position: relative;
 }
 .catalogue-photos::-webkit-scrollbar {
